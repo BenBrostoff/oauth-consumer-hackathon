@@ -19,6 +19,7 @@ const getStream = async () => {
   });
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  const stream = await getStream();
   res.status(200).json({ text: 'Hello' });
 }
