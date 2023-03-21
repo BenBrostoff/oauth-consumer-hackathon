@@ -71,11 +71,11 @@ export const authOptions: NextAuthOptions = {
       type: "oauth",
       debug: true,
       authorization: {
-        url: "http://local-klaviyo.com:8080/oauth/authorize/",
+        url: "https://oauth-klaviyo.ngrok.io/oauth/authorize/",
         params: { grant_type: 'authorization_code', scope: "campaigns:read campaigns:write catalogs:read catalogs:write data-privacy:read data-privacy:write events:read events:write flows:read flows:write list:read list:write metrics:read metrics:write profiles:read profiles:write segments:read segments:write subscriptions:read subscriptions:write tags:read tags:write templates:read template:write list-and-segments:read list-and-segments:write" }
       },
       checks: ["pkce"],
-      token: "http://local-klaviyo.com:8080/oauth/token/",
+      token: "https://oauth-klaviyo.ngrok.io/oauth/token/",
       clientId: "xRGIwNdxloXrNu3W7Do3DkfBaONS2VrGWEqM26e7",
       clientSecret: "O3nTOGDgvrhEoqBm3fBBW7i0m5veaJS5nhcvr59KgyOlKcCs1tRd8GliTHItKiMcu3eiNa097PUMEnbdSXP04QbCg1ADesKI8fObT9xGgiUhGBZsT4aol5wDvVNwAQEn",
       userinfo: {
