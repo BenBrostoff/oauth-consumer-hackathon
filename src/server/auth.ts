@@ -28,6 +28,8 @@ declare module "next-auth" {
   // }
 }
 
+// @ts-ignore
+// @ts-ignore
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -38,10 +40,20 @@ export const authOptions: NextAuthOptions = {
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
+        console.log('hello we are in');
+        console.log(session);
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
     },
+    redirect({ url, baseUrl }) {
+      console.log("hey");
+      // Allows relative callback URLs
+      // if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      // else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    }
   },
   providers: [
     /**
@@ -57,10 +69,22 @@ export const authOptions: NextAuthOptions = {
       id: "klaviyo",
       name: "Klaviyo",
       type: "oauth",
-      authorization: "http://local-klaviyo.com:8080/oauth/authorize",
-      token: "http://local-klaviyo.com:8080/oauth/token",
-      profile(profile) {
+      debug: true,
+      authorization: {
+        url: "http://local-klaviyo.com:8080/oauth/authorize/",
+        params: { grant_type: 'authorization_code', scope: "campaigns:read campaigns:write catalogs:read catalogs:write data-privacy:read data-privacy:write events:read events:write flows:read flows:write list:read list:write metrics:read metrics:write profiles:read profiles:write segments:read segments:write subscriptions:read subscriptions:write tags:read tags:write templates:read template:write list-and-segments:read list-and-segments:write" }
+      },
+      checks: ["pkce"],
+      token: "http://local-klaviyo.com:8080/oauth/token/",
+      clientId: "xRGIwNdxloXrNu3W7Do3DkfBaONS2VrGWEqM26e7",
+      clientSecret: "O3nTOGDgvrhEoqBm3fBBW7i0m5veaJS5nhcvr59KgyOlKcCs1tRd8GliTHItKiMcu3eiNa097PUMEnbdSXP04QbCg1ADesKI8fObT9xGgiUhGBZsT4aol5wDvVNwAQEn",
+      userinfo: {
+        request: () => {}
+      },
+      profile(profile, tokens) {
+        console.log(tokens);
         return {
+          token: tokens.access_token,
           id: 'id',
           name: 'name',
           email: 'email',
