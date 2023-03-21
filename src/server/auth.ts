@@ -44,10 +44,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
     /**
      * ...add more providers here.
      *
@@ -57,6 +53,21 @@ export const authOptions: NextAuthOptions = {
      *
      * @see https://next-auth.js.org/providers/github
      */
+    {
+      id: "klaviyo",
+      name: "Klaviyo",
+      type: "oauth",
+      authorization: "http://local-klaviyo.com:8080/oauth/authorize",
+      token: "http://local-klaviyo.com:8080/oauth/token",
+      profile(profile) {
+        return {
+          id: 'id',
+          name: 'name',
+          email: 'email',
+          image: 'picture',
+        }
+      },
+    }
   ],
 };
 
